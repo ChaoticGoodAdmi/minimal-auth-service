@@ -25,7 +25,7 @@ class TokenController(
     @GetMapping("/validate")
     fun validateToken(@RequestHeader(HttpHeaders.AUTHORIZATION) authHeader: String?): ResponseEntity<Any> {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Authorization header")
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapOf("message" to "Invalid Authorization header"))
         }
 
         val token = authHeader.substring(7)
@@ -34,7 +34,7 @@ class TokenController(
         return if (isValid) {
             ResponseEntity.ok(mapOf("message" to "Token is valid"))
         } else {
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is invalid or expired")
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(mapOf("message" to "Token is invalid or expired"))
         }
     }
 }
